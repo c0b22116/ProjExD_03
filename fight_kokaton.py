@@ -150,6 +150,7 @@ def main():
     clock = pg.time.Clock()
     bg_img = pg.image.load("ProjExD2023/ex03/fig/pg_bg.jpg")
     fonto  = pg.font.Font(None, 80) #課題3
+    fonto2  = pg.font.Font(None, 80) #課題5
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
@@ -184,6 +185,12 @@ def main():
                 if beam._rct.colliderect(bomb._rct):
                     beam = None
                     score+=1
+                    if (score == NUM_OF_BOMBS):
+                        txt2 = fonto2.render("Congratulation!!", True, (255, 0, 0)) # 課題5
+                        screen.blit(txt2, [400, 400]) # 課題5
+                        pg.display.update() # 課題5
+                        time.sleep(1) # 課題5
+                        return  
                     del bombs[i]
                     bird.change_img(6, screen)
                     break
