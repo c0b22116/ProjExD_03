@@ -49,6 +49,11 @@ class Bird:
             True, 
             False
         )
+        img0 = pg.transform.flip(pg.image.load(f"ProjExD2023/ex03/fig/{num}.png"), 0,2,0) #左向き　２倍
+        img1 = pg.transform.flip(img0, True, False) #右向き、２倍
+        self_imgs = {
+            
+        }
         self._rct = self._img.get_rect()
         self._rct.center = xy
 
@@ -107,15 +112,11 @@ class Bomb:
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
 
-
 class Beam:
     """
     ビームに関するクラス
     """
     def __init__(self, bird: Bird):
-        """
-        割愛
-        """
         self._img = pg.transform.rotozoom(pg.image.load(f"ProjExD2023/ex03/fig/beam.png"), 0, 2.0)  # 画像surface
         self._rct = self._img.get_rect()  # 画像surfaceに対応したrect
         self._rct.left = bird._rct.right  # こうかとんの右側にビームの左側を合わせる
