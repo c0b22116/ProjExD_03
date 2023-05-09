@@ -7,7 +7,7 @@ import pygame as pg
 
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
-NUM_OF_BOMBS = 5  # 爆弾の数
+NUM_OF_BOMBS = 3  # 爆弾の数
 
 
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
@@ -149,10 +149,11 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     clock = pg.time.Clock()
     bg_img = pg.image.load("ProjExD2023/ex03/fig/pg_bg.jpg")
-
+    fonto  = pg.font.Font(None, 80) #課題3
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
+    score = 0 #課題3
 
     tmr = 0
     while True:
@@ -177,16 +178,18 @@ def main():
             
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-
         if beam is not None:  # ビームが存在しているとき
             beam.update(screen)
             for i, bomb in enumerate(bombs):
                 if beam._rct.colliderect(bomb._rct):
                     beam = None
+                    score+=1
                     del bombs[i]
                     bird.change_img(6, screen)
                     break
-
+                
+        txt = fonto.render(str(score), True, (0, 0, 0)) # 課題3
+        screen.blit(txt, [300, 200]) # 課題3
         pg.display.update()
         clock.tick(1000)
 
