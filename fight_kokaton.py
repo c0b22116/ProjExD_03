@@ -123,23 +123,23 @@ class Bomb:
         
         
 class Explosion:
-    """
-    課題１
-    爆発のエフェクトに関するクラス
-    """
-    def __init__(self, bomb: Bomb, life: int):
-        self._img = pg.image.load(f"ProjExD2023/ex03/fig/explosion.png")
-        self._img2 = pg.transform.flip(self._img, True, True)
-        self._center = bomb._rct.center
-        self._life = life
-        
-    def update(self, screen: pg.Surface):
-        self._life -= 1
-        self._img = self._img2[self._life//10 % 2]
-        screen.blit(self._img, self._center)
-        
-    def timer(self):
-        return self._life
+    def __init__(self, bombs : Bomb, num):
+        self._img = pg.image.load(f"ProjExD2023/ex03/fig/explosion.gif")
+        self._imgs = [self._img, pg.transform.flip(self._img, True, True)]
+        self._rct = self._img.get_rect()
+        self._rct.center = bombs._rct.center
+        self.explosion_life = num
+
+    def update(self, screen):
+        self.explosion_life -= 1
+        for i in range(self.explosion_life):
+            if i%2 == 0:
+                screen.blit(self._imgs[0], self._rct)
+            if i%2 == 1:
+                screen.blit(self._imgs[1], self._rct)
+
+    def get_life(self):
+        return self.explosion_life
     
 
 class Beam:
