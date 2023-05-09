@@ -8,6 +8,7 @@ import pygame as pg
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 3  # 爆弾の数
+flag = True
 
 
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
@@ -86,7 +87,7 @@ class Bird:
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self._img = self._imgs[tuple(sum_mv)]  # 押されたキーの合計値
         screen.blit(self._img, self._rct)
-
+        
 
 class Bomb:
     """
@@ -119,7 +120,27 @@ class Bomb:
             self._vy *= -1
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
-
+        
+        
+class Explosion:
+    """
+    課題１
+    爆発のエフェクトに関するクラス
+    """
+    def __init__(self, bomb: Bomb, life: int):
+        self._img = pg.image.load(f"ProjExD2023/ex03/fig/explosion.png")
+        self._img2 = pg.transform.flip(self._img, True, True)
+        self._center = bomb._rct.center
+        self._life = life
+        
+    def update(self, screen: pg.Surface):
+        self._life -= 1
+        self._img = self._img2[self._life//10 % 2]
+        screen.blit(self._img, self._center)
+        
+    def timer(self):
+        return self._life
+    
 
 class Beam:
     """
@@ -185,6 +206,7 @@ def main():
                 if beam._rct.colliderect(bomb._rct):
                     beam = None
                     score+=1
+                    #Explosion.update(bomb,4) #課題１ 
                     if (score == NUM_OF_BOMBS):
                         txt2 = fonto2.render("Congratulation!!", True, (255, 0, 0)) # 課題5
                         screen.blit(txt2, [400, 400]) # 課題5
